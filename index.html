@@ -3,6 +3,8 @@
 		<script type="text/javascript" src="https://raw.githubusercontent.com/MikeMcl/bignumber.js/master/bignumber.js"></script>
 		<script type="text/javascript" src="https://raw.githubusercontent.com/ethereum/web3.js/master/dist/web3-light.js"></script>
 		
+	
+
 		<script type="text/javascript">
 				var Web3 = require('web3');
 				web3 = new Web3(new Web3.providers.HttpProvider(" https://mainnet.infura.io/cHbRZrapth8QaiDXVxyK"));
@@ -12,7 +14,7 @@
 				var myContractInstance = MyContract .at('0x779B7b713C86e3E6774f5040D9cCC2D43ad375F8');
 
 				function watchBalance() {
-					var owner = myContractInstance .owner.call();
+					var owner = myContractInstance .stopTime.call();
 					var amount = myContractInstance .amountRaised.call();
 					document.getElementById('holders').innerText = 'owner: ' + owner;
 					document.getElementById('tokens').innerText = ' amount raised: ' + amount;
@@ -20,13 +22,79 @@
 		</script>
 	</head>
 	<body>
-		    <h1>StakePool ICO</h1>
-		        <button type="button" onClick="watchBalance();">watch balance</button>
-			    <div></div>
-			        <div id="holders"></div>
-				    <div id="tokens"></div>
-				        <div id="current"></div>
-					    <div id="diff"></div>
+		<h1>StakePool ICO</h1>
+		<button type="button" onClick="watchBalance();">watch balance</button>
+		<div></div>
+		<div id="holders"></div>
+		<div id="tokens"></div>
+		<div id="current"></div>
+		<div id="diff"></div>
+
+		<h1>Countdown</h1>
+		<div id="clockdiv">
+			<div>
+				<span class="days"></span>
+				<div class="smalltext">Days</div>
+			</div>
+			<div>
+				<span class="hours"></span>
+				<div class="smalltext">Hours</div>
+			</div>
+			<div>
+				<span class="minutes"></span>
+				<div class="smalltext">Minutes</div>
+			</div>
+			<div>
+				<span class="seconds"></span>
+				<div class="smalltext">Seconds</div>
+			</div>
+		</div>
+	<script type="text/javascript">
+		
+				function getTimeRemaining(endtime) {
+					var t = Date.parse(endtime) - Date.parse(new Date());
+					var seconds = Math.floor((t / 1000) % 60);
+					var minutes = Math.floor((t / 1000 / 60) % 60);
+					var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+					var days = Math.floor(t / (1000 * 60 * 60 * 24));
+					return {
+						'total': t,
+						'days': days,
+						'hours': hours,
+						'minutes': minutes,
+						'seconds': seconds
+					};
+				}
+
+				function initializeClock(id, endtime) {
+					var clock = document.getElementById(id);
+					var daysSpan = clock.querySelector('.days');
+					var hoursSpan = clock.querySelector('.hours');
+					var minutesSpan = clock.querySelector('.minutes');
+					var secondsSpan = clock.querySelector('.seconds');
+
+					function updateClock() {
+						var t = getTimeRemaining(endtime);
+
+						daysSpan.innerHTML = t.days;
+						hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+						minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+						secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+						if (t.total <= 0) {
+							clearInterval(timeinterval);
+						}
+					}
+
+					updateClock();
+					var timeinterval = setInterval(updateClock, 1000);
+				}
+				console.log(myContractInstance .stopTime.call());
+				var deadline = new Date( myContractInstance .stopTime.call());
+				initializeClock('clockdiv', deadline);
+
+		</script>
+
 	</body>
 </html>
 
