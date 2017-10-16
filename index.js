@@ -6,7 +6,7 @@ var MyContract = web3.eth.contract(abi);
 var myContractInstance = MyContract .at('0x779B7b713C86e3E6774f5040D9cCC2D43ad375F8');
 var owner = myContractInstance .stopTime.call();
 var amount = myContractInstance .amountRaised.call();
-document.getElementById('raised').innerText = 'Amount raised : ' + amount + 'ETH';
+document.getElementById('raised').innerText = 'Amount raised : ' + amount + ' ETH';
 
 function getTimeRemaining(endtime) {
 	var t = Date.parse(endtime) - Date.parse(new Date());
