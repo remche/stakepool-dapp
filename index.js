@@ -4,13 +4,11 @@ abi=[{"constant":true,"inputs":[],"name":"stopTime","outputs":[{"name":"","type"
 
 var MyContract = web3.eth.contract(abi);
 var myContractInstance = MyContract .at('0x779B7b713C86e3E6774f5040D9cCC2D43ad375F8');
+var owner = myContractInstance .stopTime.call();
+var amount = myContractInstance .amountRaised.call();
+document.getElementById('raised').innerText = 'Amount raised : ' + amount + 'ETH';
 
-function watchBalance() {
-	var owner = myContractInstance .stopTime.call();
-	var amount = myContractInstance .amountRaised.call();
-	document.getElementById('holders').innerText = 'owner: ' + owner;
-	document.getElementById('tokens').innerText = ' amount raised: ' + amount;
-}function getTimeRemaining(endtime) {
+function getTimeRemaining(endtime) {
 	var t = Date.parse(endtime) - Date.parse(new Date());
 	var seconds = Math.floor((t / 1000) % 60);
 	var minutes = Math.floor((t / 1000 / 60) % 60);
